@@ -1,0 +1,38 @@
+void OnCollisionEnter(Collision col)
+    {
+        if(col.gameObject.tag=="Bullet")
+        {
+            ContactPoint contact = col.contacts[0];
+            
+            CreateBlood(contact.point);
+        }
+    }
+
+
+void CreateBlood(Vector3 pos)
+    {
+        StartCoroutine(this.CreateBloodEffects(pos));
+    }
+
+IEnumerator CreateBloodEffects(Vector3 pos)
+    {
+        GameObject enemyblood1 = Instantiate(enemyBloodEffect, pos, Quaternion.identity) as GameObject;
+        //Destroy(enemyblood1, 1.5f);
+
+        //만약 혈흔 프리팹에 차일드 오브젝트를(혈흔) up 방향으로 미리 올려놨다면...
+        //혈흔데칼의 생성되는 위치는 바닥에서 조금 올린 위치로 만들어야 바닥에 묻히지 않는다 
+        //근데 나는 이미 포지션 값 줘서 조절해놓긴 했음!^^
+        //Vector3 decalPos = myTr.position + (Vector3.up * 0.1f);
+
+        Quaternion decalRot = Quaternion.Euler(0, Random.Range(0, 360), 0);
+        float scale = Random.Range(1.0f, 2.5f);
+
+        //혈흔데칼 프리팹 생성
+        //Transform enemyblood2=Instantiate(enemyBloodDecal, decalPos, decalRot) as Transform;
+        //만약 혈흔 프리펩에 차일드 오브젝트를(혈흔) up 방향으로 미리 올려놨다면...
+        Transform enemyblood2 = Instantiate(enemyBloodDecal, myTr.position, decalRot) as Transform;
+
+        enemyblood2.localScale = Vector3.one * scale;
+
+        yield return null;
+    }
